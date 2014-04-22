@@ -12,12 +12,14 @@
 
             /* -- Lifecycle ------------------------------------------------- */
             created: function() {
-                if ('speechSynthesis' in window) {
-                    this.speech = new SpeechSynthesisUtterance();
-                }
-                else {
+                // Check for browser support
+                if (!'speechSynthesis' in window) {
                     console.error('Your browser do not support the Web Speech API');
+                    return;
                 }
+                
+                // Create specher instance
+                this.speech = new SpeechSynthesisUtterance();
             },
             ready: function() {
                 // Initialize attributes
