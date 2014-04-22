@@ -27,11 +27,21 @@
                 this.accentChanged();
 
                 // Initialize event listeners
-                this.bindStart();
-                this.bindEnd();
-                this.bindError();
-                this.bindPause();
-                this.bindResume();
+                [
+                    'start',
+                    'end',
+                    'error',
+                    'pause',
+                    'resume'
+                ].forEach(function (eventName) {
+                    // Event wrapper
+
+                    var eventCallback = function(e) {
+                        this.fire(eventName, e);
+                    }.bind(this)
+                    
+                    this.speech.addEventListener(eventName, eventCallback);
+                }.bind(this));
 
                 if (this.autoplay) {
                     this.speak();
@@ -56,43 +66,6 @@
             },
             resume: function() {
                 window.speechSynthesis.resume();
-            },
-
-            /* -- Events ---------------------------------------------------- */
-            bindStart: function() {
-                var that = this;
-
-                this.speech.addEventListener('start', function(e) {
-                    that.fire('start', e);
-                });
-            },
-            bindEnd: function() {
-                var that = this;
-
-                this.speech.addEventListener('end', function(e) {
-                    that.fire('end', e);
-                });
-            },
-            bindError: function() {
-                var that = this;
-
-                this.speech.addEventListener('error', function(e) {
-                    that.fire('error', e);
-                });
-            },
-            bindPause: function() {
-                var that = this;
-
-                this.speech.addEventListener('pause', function(e) {
-                    that.fire('pause', e);
-                });
-            },
-            bindResume: function() {
-                var that = this;
-
-                this.speech.addEventListener('resume', function(e) {
-                    that.fire('resume', e);
-                });
             }
         });
     </script>
